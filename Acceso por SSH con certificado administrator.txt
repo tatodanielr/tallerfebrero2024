@@ -1,0 +1,7 @@
+   9  ssh-keygen -t ed25519 -C "Ansible"
+   10  ssh-copy-id -i ansible.pub 10.50.9.100
+   11  ssh-copy-id -i /home/administrator/.ssh/ansible.pub 10.50.9.100
+   12  ssh-copy-id -i /home/administrator/.ssh/ansible.pub 10.50.9.101
+   13  ssh 10.50.9.100
+   14  ssh 10.50.9.101
+   15  cd /home/administrator/
