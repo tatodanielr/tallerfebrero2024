@@ -3,14 +3,14 @@
   hosts: all
   become: yes
   tasks:
-    - name: Update Ubuntu packages
+    - name: Update Ubuntu
       when: ansible_distribution == 'Ubuntu'
       apt:
         update_cache: yes
         upgrade: yes
         cache_valid_time: 3600
 
-    - name: Update Rocky Linux packages
+    - name: Update Rocky Linux
       when: ansible_distribution == 'Rocky'
       dnf:
         name: '*'
