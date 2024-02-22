@@ -33,3 +33,10 @@
           - docker-compose
         state: latest
         update_cache: true
+    - name: Docker Network
+      docker_network:
+       name: Docker_Network
+       driver: bridge
+       ipam_config:
+          - subnet: "10.50.9.0/24"
+            gateway: "10.50.9.200"

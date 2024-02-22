@@ -2,16 +2,25 @@
 - name: Deploy docker container
   hosts: Ubuntu
   become: true
+
   tasks:
+    - name: Copy war to server
+      copy:
+       src: /home/administrator/tallerfebrero2024/Tomcat8/sample.war
+       dest: /home/ansible/sample.war
+
     - name: Create Docker container for Tomcat 8
       docker_container:
         name: tomcat8-container
         image: tomcat:8
         state: started
+        networks:
+          - name: Docker_Network
+            ipv4_address: 10.50.9.201
         ports:
           - "8080:8080"
- 	volumes:
-          - "/ruta/a/tu/aplicacion.war:/usr/local/tomcat/webapps/aplicacion.war"
+        volumes:
+          - "/home/ansible/sample.war"
         restart_policy: always
 
     - name: Create Docker container for OpenJDK
