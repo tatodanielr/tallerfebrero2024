@@ -15,15 +15,21 @@
       permanent: yes
       state: enabled
 
-  handlers:
-   - name: Reload firewalld
-     firewalld:
-        state: reload
+   - name: Install OpenSSL for Self-signed certificate
+     dnf:
+      name: openssl
+      state: present
 
    - name: Install Nginx
      dnf:
       name: nginx
       state: present
+
+   - name: Create directory for certificate
+     file:
+      path: /etc/nginx/ssl
+      state: directory
+      mode: '0775'
 
    - name: Copy Nginx configuration
      template:
@@ -32,10 +38,15 @@
      notify: Restart Nginx
 
    - name: Generate SSL certificate and key
-     command: "openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/nginx/ssl/nginx-selfsigned.key -out /etc/nginx/ssl/nginx-selfsigned.crt"
+     command: "sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/nginx/ssl/nginx-selfsigned.key -out /etc/nginx/ssl/nginx-selfsigned.crt -subj '/C=UY/ST=MVD/L=MVD/O=TallerLinux2024/OU=LinuxServer/CN=ServerB.local'"
 
   handlers:
-    - name: Restart Nginx
-      service:
-        name: nginx
-        state: restarted
+   - name: Restart Nginx
+     systemd:
+       name: nginx
+       state: restarted
+
+   - name: Restart firewalld service
+     service:
+       name: firewalld
+       state: restarted
