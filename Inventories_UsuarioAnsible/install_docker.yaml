@@ -1,5 +1,5 @@
 ---
-- name: Install docker and requiered system packages
+- name: Install docker
   hosts: Ubuntu
   become: true
   tasks:

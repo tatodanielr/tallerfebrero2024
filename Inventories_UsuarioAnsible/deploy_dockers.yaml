@@ -1,0 +1,21 @@
+---
+- name: Deploy docker container
+  hosts: Ubuntu
+  become: true
+  tasks:
+    - name: Create Docker container for Tomcat 8
+      docker_container:
+        name: tomcat8-container
+        image: tomcat:8
+        state: started
+        ports:
+          - "8080:8080"
+ 	volumes:
+          - "/ruta/a/tu/aplicacion.war:/usr/local/tomcat/webapps/aplicacion.war"
+        restart_policy: always
+
+    - name: Create Docker container for OpenJDK
+      docker_container:
+        name: openjdk-container
+        image: openjdk:8-jdk-alpine
+        state: started
