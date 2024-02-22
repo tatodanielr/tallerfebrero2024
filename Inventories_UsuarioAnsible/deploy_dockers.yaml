@@ -22,5 +22,5 @@
         ports:
           - "8080:8080"
         volumes:
-          - "/home/ansible:/usr/local/tomcat/webapps"
+          - "/home/ansible/war_deploys:/usr/local/tomcat/webapps"
         restart_policy: always
