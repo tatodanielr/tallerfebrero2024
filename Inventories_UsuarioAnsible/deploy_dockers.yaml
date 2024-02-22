@@ -11,20 +11,11 @@
 
     - name: Create Docker container for Tomcat 8
       docker_container:
-        name: tomcat8-container
-        image: tomcat:8
+        name: WebappTallerLinux
+        image: tomcat:8-jdk8
         state: started
-        networks:
-          - name: Docker_Network
-            ipv4_address: 10.50.9.201
         ports:
           - "8080:8080"
         volumes:
-          - "/home/ansible/sample.war"
+          - "/home/ansible/sample.war:/usr/local/tomcat/webapps"
         restart_policy: always
-
-    - name: Create Docker container for OpenJDK
-      docker_container:
-        name: openjdk-container
-        image: openjdk:8-jdk-alpine
-        state: started
