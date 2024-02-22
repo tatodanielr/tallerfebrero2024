@@ -11,15 +11,8 @@ events {
 
 http {
     access_log /var/log/nginx/access.log;
-
-    sendfile on;
-    tcp_nopush on;
-    tcp_nodelay on;
-
-    keepalive_timeout 65;
-    types_hash_max_size 2048;
-
-    server {
+    
+   server {
         listen 80;
         server_name serverb;
         return 301 https://$host$request_uri;
@@ -28,13 +21,11 @@ http {
     server {
         listen 443 ssl http2;
         server_name serverb;
-        #ssl_certificate /etc/nginx/ssl/nginx-selfsigned.crt;
-        #ssl_certificate_key /etc/nginx/ssl/nginx-selfsigned.key;
-        #ssl_protocols TLSv1.2 TLSv1.3;
-        #ssl_prefer_server_ciphers on;
+        ssl_certificate /etc/nginx/ssl/nginx-selfsigned.crt;
+        ssl_certificate_key /etc/nginx/ssl/nginx-selfsigned.key;
 
-        location /sample/ {
-            proxy_pass http://192.168.1.6:8080/sample/;
+        location / {
+            proxy_pass http://192.168.1.6:8080/;
             proxy_set_header Host $host;
             proxy_set_header X-Real-IP $remote_addr;
             proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
