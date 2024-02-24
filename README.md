@@ -27,7 +27,7 @@ Uso
     
 3.  Ejecuta los playbooks de Ansible utilizando el siguiente comando:
     
-    `ansible-playbook -i Inventories_Usuario_Ansible/inventory.ini playbooks/nombre_del_playbook.yaml`
+    `ansible-playbook -i inventory.ini playbooks/nombre_del_playbook.yaml`
     
     Asegúrate de reemplazar `nombre_del_playbook.yaml` con el nombre del playbook que deseas ejecutar y `inventario.ini` con el nombre de tu archivo de inventario.
     
