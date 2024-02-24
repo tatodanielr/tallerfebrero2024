@@ -38,7 +38,7 @@
 
    - name: Copy Nginx configuration
      template:
-      src: /home/administrator/tallerfebrero2024/Inventories_UsuarioAnsible/jinja/nginx.conf.j2
+      src: /home/administrator/tallerfebrero2024/Inventories_Usuario_Ansible/jinja/nginx.conf.j2
       dest: /etc/nginx/nginx.conf
 
    - name: Generate SSL certificate and key
