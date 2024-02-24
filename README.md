@@ -171,6 +171,9 @@ outlined in the Application Developer's Guide.
 Chequeo vía navegador para verificación de certificado.
 ![image](https://github.com/tatodanielr/tallerfebrero2024/assets/157429072/5a075523-39f2-4093-8bc2-63c802929b60)
 
+Evidencia avanzada de ejecución.
+
+https://github.com/tatodanielr/tallerfebrero2024/tree/main/Inventories_Usuario_Ansible/evidencias
 
 Autor
 -----
