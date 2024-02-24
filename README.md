@@ -3,6 +3,7 @@ Obligatorio: Taller Instalación Servidores Linux febrero 2024
 
 Letra: https://github.com/tatodanielr/tallerfebrero2024/blob/main/EvaluacionTallerInstalacionServidores_Febrero2024.pdf
 
+
 Automatización de Configuraciones mediante Ansible
 ========================================================
 
@@ -174,6 +175,13 @@ Chequeo vía navegador para verificación de certificado.
 Evidencia avanzada de ejecución.
 
 https://github.com/tatodanielr/tallerfebrero2024/tree/main/Inventories_Usuario_Ansible/evidencias
+
+Documentación detallada de la implementación.
+========================================================
+
+El siguiente documento detalla paso por paso, la implementación y el despliegue, de la arquitectura solicitada en la letra del obligatorio.
+
+https://github.com/tatodanielr/tallerfebrero2024/blob/main/Documentaci%C3%B3n_del_proyecto.docx
 
 Autor
 -----
