@@ -1,31 +1,33 @@
 # tallerfebrero2024
 Obligatorio: Taller Instalación Servidores Linux febrero 2024
-https://github.com/tatodanielr/tallerfebrero2024/blob/main/EvaluacionTallerInstalacionServidores_Febrero2024.pdf
+
+Letra: https://github.com/tatodanielr/tallerfebrero2024/blob/main/EvaluacionTallerInstalacionServidores_Febrero2024.pdf
 
 Automatización de Configuraciones mediante Ansible
 ========================================================
 
 Este repositorio contiene una serie de playbooks de Ansible diseñados para automatizar tareas de configuración en entornos Ubuntu y Rocky Linux. Los playbooks abordan desde la actualización de paquetes hasta la instalación de Docker y Nginx, así como el despliegue de aplicaciones.
 
+
 Requisitos
 ----------
 
-*   Ansible instalado en la máquina local o en el servidor desde donde se ejecutarán los playbooks.
+*   Ansible instalado en una máquina bastion desde donde se ejecutarán los playbooks.
 *   Conexión SSH establecida con los hosts gestionados.
 *   Conocimientos básicos de YAML y Ansible.
 
 Uso
 ---
 
-1.  Clona este repositorio en tu máquina local:
+1.  Clonar este repositorio en tu máquina bastion:
     
     `git clone git@github.com:tatodanielr/tallerfebrero2024.git`
     
-2.  Actualiza el archivo de inventario en el directorio `inventory/` con los detalles de los hosts a gestionar.
+2.  Actualizae el archivo de inventario en el directorio `Inventories_Usuario_Ansible/` con los detalles de los hosts a gestionar.
     
 3.  Ejecuta los playbooks de Ansible utilizando el siguiente comando:
     
-    `ansible-playbook -i inventory/inventario.txt playbooks/nombre_del_playbook.yaml`
+    `ansible-playbook -i Inventories_Usuario_Ansible/inventory.ini playbooks/nombre_del_playbook.yaml`
     
     Asegúrate de reemplazar `nombre_del_playbook.yaml` con el nombre del playbook que deseas ejecutar y `inventario.ini` con el nombre de tu archivo de inventario.
     
@@ -64,7 +66,7 @@ Descripción detallada de los Playbooks
 *   **Descripción detallada**:
     *   Utiliza el módulo `apt` para instalar los paquetes requeridos por Docker.
     *   Agrega la clave GPG de Docker y agrega el repositorio de Docker al sistema.
-    *   Utiliza el módulo `apt` nuevamente para instalar Docker CE y Docker Compose.
+    *   Utiliza el módulo `apt` nuevamente para instalar Docker CE.
     *   Las tareas están dirigidas solo a los hosts del grupo "Ubuntu".
 
 ### 3\_deploy\_dockers.yaml
@@ -72,8 +74,8 @@ Descripción detallada de los Playbooks
 *   **Objetivo**: Desplegar un contenedor Docker de Tomcat 8 y copiar una aplicación web.
 *   **Descripción detallada**:
     *   Crea un directorio en los hosts destinado para el despliegue de aplicaciones.
-    *   Copia un archivo `.war` desde la máquina de control al directorio creado en los hosts.
-    *   Utiliza el módulo `docker_container` para crear y ejecutar un contenedor Docker de Tomcat 8.
+    *   Copia un archivo https://github.com/tatodanielr/tallerfebrero2024/blob/main/Tomcat8/sample.war desde la máquina bastion al directorio creado en los hosts.
+    *   Utiliza el módulo `docker_container` para crear y ejecutar un contenedor Docker de Tomcat 8 con OpenJDK 8.
     *   El contenedor se configura para que sirva la aplicación web desde el archivo `.war`.
     *   Estas tareas están dirigidas solo a los hosts del grupo "Ubuntu".
 
@@ -84,9 +86,10 @@ Descripción detallada de los Playbooks
     *   Configura el firewall para permitir tráfico HTTP y HTTPS.
     *   Instala OpenSSL para generar un certificado autofirmado.
     *   Instala Nginx y crea un directorio para almacenar certificados SSL.
-    *   Copia un archivo de configuración personalizado de Nginx.
+    *   Copia un archivo de configuración personalizado utilizando jinja para Nginx.
     *   Genera un certificado SSL autofirmado.
-    *   Configura SELinux y reinicia el firewall y el servicio Nginx.
+    *   Configura SELinux con el booleano httpd_can_network_connect.
+    *   Reinicia el firewall y el servicio Nginx.
     *   Estas tareas están dirigidas solo a los hosts del grupo "Rocky".
 
 ### Chequeo de Despliegue
