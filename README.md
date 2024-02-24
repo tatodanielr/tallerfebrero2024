@@ -136,7 +136,7 @@ outlined in the Application Developer's Guide.
 ```
 Curl al reverse proxy.
   ```bash
- curl https://servera/sample/
+ curl https://serverb/sample/
 ```
 ```
 <html>
