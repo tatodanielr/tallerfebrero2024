@@ -1,0 +1,21 @@
+Asi funciona git.
+
+Si es el branch master.
+Colono el repo
+Modifico
+Add
+Commit
+Push
+Y vuelvo al flujo modificando.
+
+Si tengo otrao branch.
+Desde branch.
+Modifico.
+Add.
+Commit
+Push.
+Si sigo trabajando en el mismo branch vuelvo al modificar.
+
+Si quiero hacer un merge al repo princial
+Merge
+y vuelvo al modificarl del master
