@@ -1,5 +1,6 @@
 # tallerfebrero2024
 Obligatorio: Taller Instalación Servidores Linux febrero 2024
+https://github.com/tatodanielr/tallerfebrero2024/blob/main/EvaluacionTallerInstalacionServidores_Febrero2024.pdf
 
 Automatización de Configuraciones mediante Ansible
 ========================================================
