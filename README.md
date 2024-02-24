@@ -27,7 +27,7 @@ Uso
     
 3.  Ejecuta los playbooks de Ansible utilizando el siguiente comando:
     
-    `ansible-playbook -i Inventories_Usuario_Ansible/inventory.ini playbooks/nombre_del_playbook.yaml`
+    `ansible-playbook -i inventory.ini playbooks/nombre_del_playbook.yaml`
     
     Asegúrate de reemplazar `nombre_del_playbook.yaml` con el nombre del playbook que deseas ejecutar y `inventario.ini` con el nombre de tu archivo de inventario.
     
@@ -75,7 +75,7 @@ Descripción detallada de los Playbooks
 *   **Descripción detallada**:
     *   Crea un directorio en los hosts destinado para el despliegue de aplicaciones.
     *   Copia un archivo https://github.com/tatodanielr/tallerfebrero2024/blob/main/Tomcat8/sample.war desde la máquina bastion al directorio creado en los hosts.
-    *   Utiliza el módulo `docker_container` para crear y ejecutar un contenedor Docker de Tomcat 8 con OpenJDK 8.
+    *   Utiliza el módulo `docker_container` para crear y ejecutar un contenedor Docker de Tomcat 8 con OpenJDK.
     *   El contenedor se configura para que sirva la aplicación web desde el archivo `.war`.
     *   Estas tareas están dirigidas solo a los hosts del grupo "Ubuntu".
 
@@ -171,6 +171,9 @@ outlined in the Application Developer's Guide.
 Chequeo vía navegador para verificación de certificado.
 ![image](https://github.com/tatodanielr/tallerfebrero2024/assets/157429072/5a075523-39f2-4093-8bc2-63c802929b60)
 
+Evidencia avanzada de ejecución.
+
+https://github.com/tatodanielr/tallerfebrero2024/tree/main/Inventories_Usuario_Ansible/evidencias
 
 Autor
 -----
