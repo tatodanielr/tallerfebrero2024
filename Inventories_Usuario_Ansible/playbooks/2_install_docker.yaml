@@ -23,7 +23,7 @@
         repo: deb https://download.docker.com/linux/ubuntu focal stable
         state: present
 
-    - name: Update apt and install docker-ce and docker-compose
+    - name: Update apt and install docker-ce
       apt:
         pkg:
           - docker-ce
