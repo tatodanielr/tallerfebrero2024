@@ -75,7 +75,7 @@ Descripción detallada de los Playbooks
 *   **Descripción detallada**:
     *   Crea un directorio en los hosts destinado para el despliegue de aplicaciones.
     *   Copia un archivo https://github.com/tatodanielr/tallerfebrero2024/blob/main/Tomcat8/sample.war desde la máquina bastion al directorio creado en los hosts.
-    *   Utiliza el módulo `docker_container` para crear y ejecutar un contenedor Docker de Tomcat 8 con OpenJDK 8.
+    *   Utiliza el módulo `docker_container` para crear y ejecutar un contenedor Docker de Tomcat 8 con OpenJDK.
     *   El contenedor se configura para que sirva la aplicación web desde el archivo `.war`.
     *   Estas tareas están dirigidas solo a los hosts del grupo "Ubuntu".
 
