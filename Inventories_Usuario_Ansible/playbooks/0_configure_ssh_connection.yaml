@@ -1,0 +1,6 @@
+---
+- name: Configure SSH connection on Ubuntu and Rocky Linux
+  hosts: all
+  become: yes
+  tasks:
+
