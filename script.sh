@@ -4,8 +4,9 @@
 LOCAL_USERNAME="ansible"
 REMOTE_USERNAME="administrator"
 REMOTE_SERVERS_FILE="remote_servers.txt"
-REMOTE_SERVER_DISTRIBUTION="$(cat /etc/os-release | grep "^NAME" | cut -d "=" -f 2)"
+REMOTE_SERVER_DISTRIBUTION="$(cat /etc/os-release | grep "^NAME" | cut -d "=" -f 2 | sed 's/"//g')"
 
+for server in "${REMOTE_SERVERS_FILE[@]}"; do
 # Check if the remote servers file exists
 if [ ! -f "$REMOTE_SERVERS_FILE" ]; then
     echo "Remote servers file $REMOTE_SERVERS_FILE not found."
@@ -14,15 +15,17 @@ fi
 
 # Check the distribution and add the user to the appropriate group
 if [ "$REMOTE_SERVER_DISTRIBUTION" = "Ubuntu" ]; then
-    sudo usermod -aG sudo $LOCAL_USERNAME
+    sudo useradd $LOCAL_USERNAME -m -G sudo
+    sudo mkdir /home/ansible/.ssh
     echo "User added to 'sudo' group."
 elif [ "$REMOTE_SERVER_DISTRIBUTION" = "Rocky" ]; then
-    sudo usermod -aG wheel $LOCAL_USERNAME
+    sudo useradd $LOCAL_USERNAME -m -G wheel
+    sudo mkdir /home/ansible/.ssh
     echo "User added to 'wheel' group."
 else
     echo "Unknown distribution. User not added to any group."
 fi
-
+done
 # Generate SSH key pair (Ed25519) for local user
 sudo ssh-keygen -t ed25519 -f "/home/$LOCAL_USERNAME/.ssh/id_ed25519" -N ""
 sudo cp "/home/$LOCAL_USERNAME/.ssh/id_ed25519" "/home/administrator/certificates"
