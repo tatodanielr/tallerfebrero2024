@@ -1,7 +1,9 @@
 ---
-- - name: Create a ansible user on localhost
-  hosts: localhost
+- name: Create a ansible user on localhost
+  hosts: Bastion
+  gather_facts: false
   become: yes
+  become_method: sudo
   vars:
    user_settings:
     Rocky:
@@ -9,25 +11,26 @@
     Ubuntu:
      sudo_group: sudo
   tasks:
-    - name: Add a user
-      user:
+    - name: Add a user on bastion
+      ansible.builtin.user:
         name: ansible
-        state: present
+        group: "{{ user_settings[ansible_distribution].sudo_group }}"
+        create_home: true
 
-   - name: Generate SSH key for ansible user
+    - name: Generate SSH key for ansible user
       ansible.builtin.shell: ssh-keygen -t ed25519 -f /home/ansible/.ssh/id_ed25519 -N "" -C "Estas son las key para el usuario ansible"
       args:
         creates: /home/ansible/.ssh/id_ed25519
       become_user: ansible
 
-   - name: Copy SSH key ansible to administrator directory
+    - name: Copy SSH key ansible to administrator directory
       ansible.builtin.copy:
         src: /home/ansible/.ssh/id_ed25519.pub
         dest: /home/administrator/certificates/id_ed25519.pub
         remote_src: yes
 
 - name: Create a ansible in remote servers
-  hosts: all
+  hosts: Ubuntu,Rocky
   become: yes
   vars:
    user_settings:
@@ -35,10 +38,15 @@
      sudo_group: wheel
     Ubuntu:
      sudo_group: sudo
-
   tasks:
-    - name: Add a user
-      user:
+    - name: Add ansible on Servers
+      ansible.builtin.user:
         name: ansible
-        state: present
+        group: "{{ user_settings[ansible_distribution].sudo_group }}"
+        create_home: true
 
+    - name: Send ansible user certificate
+      ansible.builtin.authorized_key:
+       user: ansible
+       key: /home/administrator/certificates/id_ed25519.pub
+       state: present
