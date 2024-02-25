@@ -6,7 +6,7 @@ REMOTE_USERNAME="administrator"
 REMOTE_SERVERS_FILE="remote_servers.txt"
 REMOTE_SERVER_DISTRIBUTION="$(cat /etc/os-release | grep "^NAME" | cut -d "=" -f 2 | sed 's/"//g')"
 
-for server in "${REMOTE_SERVERS_FILE[@]}"; do
+for server in $(cat "$REMOTE_SERVERS_FILE"); do
 # Check if the remote servers file exists
 if [ ! -f "$REMOTE_SERVERS_FILE" ]; then
     echo "Remote servers file $REMOTE_SERVERS_FILE not found."
@@ -15,12 +15,16 @@ fi
 
 # Check the distribution and add the user to the appropriate group
 if [ "$REMOTE_SERVER_DISTRIBUTION" = "Ubuntu" ]; then
-    sudo useradd $LOCAL_USERNAME -m -G sudo
+    sudo useradd $LOCAL_USERNAME -m
+    sudo usermod -aG sudo $LOCAL_USERNAME
     sudo mkdir /home/ansible/.ssh
+    sudo chsh -s /bin/bash $LOCAL_USERNAME
     echo "User added to 'sudo' group."
 elif [ "$REMOTE_SERVER_DISTRIBUTION" = "Rocky" ]; then
-    sudo useradd $LOCAL_USERNAME -m -G wheel
+    sudo useradd $LOCAL_USERNAME -m
+    sudo usermod -aG sudo $LOCAL_USERNAME
     sudo mkdir /home/ansible/.ssh
+    sudo chsh -s /bin/bash $LOCAL_USERNAME
     echo "User added to 'wheel' group."
 else
     echo "Unknown distribution. User not added to any group."
