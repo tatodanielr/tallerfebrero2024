@@ -17,7 +17,7 @@ sudo mkdir -p /home/ansible/.ssh/
 
 # Generate SSH key pair (Ed25519) for local user
 sudo ssh-keygen -t ed25519 -f "/home/$LOCAL_USERNAME/.ssh/id_ed25519" -N ""
-sudo cp "/home/$LOCAL_USERNAME/.ssh/id_ed25519" "~/certificates"
+sudo cp "/home/$LOCAL_USERNAME/.ssh/id_ed25519" "/home/administrator/certificates"
 
 # Copy the public key to remote servers
 while IFS= read -r SERVER; do
