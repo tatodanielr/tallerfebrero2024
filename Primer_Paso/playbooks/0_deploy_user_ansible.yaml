@@ -16,16 +16,15 @@
         path: "/home/administrator/.ssh/id_ed25519.pub"
       register: ssh_key
 
-  - name: Copy SSH Administrator KEY
-    ansible.posix.authorized_key:
-      user: administrator
-      state: present
-      key: "{{ lookup('file', '/home/administrator/.ssh/id_ed25519.pub') }}"
-      create: no
-    when: ssh_key.stat.exists == false
-    become: true
+    - name: Copy SSH Administrator KEY
+      ansible.posix.authorized_key:
+       user: administrator
+       state: present
+       key: "{{ lookup('file', '/home/administrator/.ssh/id_ed25519.pub') }}"
+       create: no
+      when: ssh_key.stat.exists == false
+      become: true
 
----
 - name: Copy SSH KEY Administrator and Ansible
   hosts: all
   user: administrator
@@ -37,37 +36,38 @@
       sudo_group: wheel
     Ubuntu:
       sudo_group: sudo
-  - name: Copy SSH Administrator KEY
-    ansible.posix.authorized_key:
-      user: administrator
-      state: present
-      key: "{{ lookup('file', '/home/administrator/.ssh/id_ed25519.pub') }}"
+  tasks:      
+   - name: Copy SSH Administrator KEY
+     ansible.posix.authorized_key:
+       user: administrator
+       state: present
+       key: "{{ lookup('file', '/home/administrator/.ssh/id_ed25519.pub') }}"
 
-  - name: Disable SSH root connection
-    ansible.builtin.lineinfile:
-            path: /etc/ssh/sshd_config
-            regexp: '^PermitRootLogin'
-            line: "PermitRootLogin no"
+   - name: Disable SSH root connection
+     ansible.builtin.lineinfile:
+             path: /etc/ssh/sshd_config
+             regexp: '^PermitRootLogin'
+             line: "PermitRootLogin no"
 
-  - name: Disable autentication without password
-    ansible.builtin.lineinfile:
-            path: /etc/ssh/sshd_config
-            regexp: '^PasswordAuthentication'
-            line: "PasswordAuthentication no"
+   - name: Disable autentication without password
+     ansible.builtin.lineinfile:
+             path: /etc/ssh/sshd_config
+             regexp: '^PasswordAuthentication'
+             line: "PasswordAuthentication no"
 
-  - name: Create Ansible user
-    ansible.builtin.user:
-      name: ansible
+   - name: Create Ansible user
+     ansible.builtin.user:
+       name: ansible
 
-  - name: Convert ansible user without sudo password
-    ansible.builtin.lineinfile:
-      path: /etc/sudoers
-      state: present
-      line: 'ansible ALL=(ALL) NOPASSWD: ALL'
-      insertafter: EOF
+   - name: Convert ansible user without sudo password
+     ansible.builtin.lineinfile:
+       path: /etc/sudoers
+       state: present
+       line: 'ansible ALL=(ALL) NOPASSWD: ALL'
+       insertafter: EOF
 
-  - name: Copy Ansible user KEY
-    ansible.builtin.authorized_key:
-      user: ansible
-      state: present
-      key: "{{ lookup('file', '/home/certificates/id_ed25519.pub') }}"
+   - name: Copy Ansible user KEY
+     ansible.builtin.authorized_key:
+       user: ansible
+       state: present
+       key: "{{ lookup('file', '/home/certificates/id_ed25519.pub') }}"
