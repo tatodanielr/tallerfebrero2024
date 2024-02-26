@@ -11,12 +11,19 @@
     Ubuntu:
       sudo_group: sudo
   tasks:
+    - name: Verificar si la clave SSH ya existe
+      ansible.builtin.stat:
+        path: "/home/administrator/.ssh/id_ed25519.pub"
+      register: ssh_key
 
   - name: Copy SSH Administrator KEY
     ansible.posix.authorized_key:
       user: administrator
       state: present
       key: "{{ lookup('file', '/home/administrator/.ssh/id_ed25519.pub') }}"
+      create: no
+    when: ssh_key.stat.exists == false
+    become: true
 
 ---
 - name: Copy SSH KEY Administrator and Ansible
