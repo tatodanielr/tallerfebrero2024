@@ -13,7 +13,7 @@
   tasks:
     - name: Check if shh key exists
       ansible.builtin.stat:
-        path: "/home/administrator/.ssh/id_ed25519.pub"
+        path: "/home/administrator/.ssh/id_ed25519"
       register: ssh_key
 
     - name: Copy SSH Administrator KEY
