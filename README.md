@@ -31,6 +31,11 @@ Uso
     `ansible-playbook -i inventory.ini playbooks/nombre_del_playbook.yaml`
     
     Asegúrate de reemplazar `nombre_del_playbook.yaml` con el nombre del playbook que deseas ejecutar y `inventario.ini` con el nombre de tu archivo de inventario.
+
+Ubicación de la archivos
+----------
+
+[    https://github.com/tatodanielr/tallerfebrero2024/tree/main/Inventories_Usuario_Ansible](https://github.com/tatodanielr/tallerfebrero2024/tree/main/Inventories_Usuario_Ansible)
     
 
 Playbooks
@@ -48,6 +53,11 @@ Playbooks
 4. 🌐 **Instalación de Nginx**: `4_install_nginx.yaml`
     
     *   Instala y configura Nginx en sistemas Rocky Linux.
+  
+Ubicación de las playbooks.
+----------
+
+[Inventories_Usuario_Ansible/playbooks](https://github.com/tatodanielr/tallerfebrero2024/tree/main/Inventories_Usuario_Ansible/playbooks)
     
 
 Descripción detallada de los Playbooks
