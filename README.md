@@ -201,6 +201,9 @@ Para automatizar la creación de los usuarios ansible, gestión de certificados 
 
 https://github.com/tatodanielr/tallerfebrero2024/blob/main/Inventories_Usuario_Administrator/setup_administrator_ssh_key.sh
 
+Lo debes ejecutar con los archivos que se encuentran en la carpeta.
+
+[Inventories_Usuario_Administrator](https://github.com/tatodanielr/tallerfebrero2024/tree/main/Inventories_Usuario_Administrator)
 
 Autor
 -----
