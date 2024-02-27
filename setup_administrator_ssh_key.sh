@@ -39,3 +39,11 @@ for HOST in "${SERVERS[@]}"; do
     ssh-copy-id -i ~/.ssh/id_ed25519.pub $USER_Adm@$HOST
 done
 
+password=$(openssl rand -base64 12)
+echo "The generated password is: $password"
+
+sudo useradd ansible -m -G sudo -s /bin/bash -p $password
+
+cd /home/administrator/tallerfebrero2024/Inventories_Usuario_Administrator
+
+ansible-playbook -i inventory.ini playbooks/0_deploy_user_ansible.yaml -K -vvvvv
