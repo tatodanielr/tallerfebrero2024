@@ -12,6 +12,7 @@
    - name: Create Ansible user
      ansible.builtin.user:
        name: ansible
+       shell: /bin/bash
       
    - name: Disable SSH root connection
      ansible.builtin.lineinfile:
@@ -32,28 +33,8 @@
        line: 'ansible ALL=(ALL) NOPASSWD: ALL'
        insertafter: EOF
 
-   - name: Generate SSH key pair for the ansible user
-     ansible.builtin.openssh_keypair:
-        path: /home/administrator/.ssh/ansible
-        type: ed25519
-        state: present
-        comment: ansible@bastion
-
-   - name: Set correct permissions for .ssh directory
-     ansible.builtin.file:
-       path: /home/administrator/.ssh
-       mode: '0700'
-       state: directory
-
-   - name: Set correct permissions for the private key
-     ansible.builtin.file:
-       path: /home/administrator/.ssh/ansible
-       mode: '0600'
-       state: file
-
-   - name: Copy Ansible user KEY
+   - name: Copy SSH KEY
      ansible.builtin.authorized_key:
        user: ansible
        state: present
-       key: "{{ lookup('file', '/home/administrator/.ssh/ansible.pub') }}"
-
+       key: "{{ lookup('file', '/home/administrator/.ssh/id_ed25519.pub') }}"
