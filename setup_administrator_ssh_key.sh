@@ -61,7 +61,6 @@ fi
 REMOTE_SERVER_DISTRIBUTION="$(cat /etc/os-release | grep "^NAME" | cut -d "=" -f 2 | sed 's/"//g')"
 for HOST in "${SERVERS[@]}"; do
     echo "Creating user ansible on $HOST..."
-    ssh $USER_Adm@$HOST
     if [ "$REMOTE_SERVER_DISTRIBUTION" = "Ubuntu" ]; then
     ssh $USER_Adm@$HOST "sudo useradd ansible -m -s /bin/bash -G sudo"
     ssh $USER_Adm@$HOST "sudo mkdir /home/ansible/.ssh"
