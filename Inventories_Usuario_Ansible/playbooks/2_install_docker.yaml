@@ -30,5 +30,10 @@
       apt:
         pkg:
           - docker-ce
+          - docker-compose
         state: latest
         update_cache: true
+
+    - name: Install docker module for Python
+      pip:
+        name: docker
