@@ -21,7 +21,7 @@ echo
 echo "administrator ALL=(ALL) NOPASSWD: ALL" | sudo tee -a /etc/sudoers > /dev/null
 for HOST in "${SERVERS[@]}"; do
 	echo "administrator ALL=(ALL) NOPASSWD: ALL" | sudo tee -a /etc/sudoers > /dev/null
-
+done
 
 # Path to the local SSH public key
 SSH_PUBLIC_KEY="$HOME/.ssh/id_ed25519.pub"
