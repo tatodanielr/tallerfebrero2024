@@ -1,48 +1,18 @@
 ---
-- name: Copy SSH KEY Administrator
-  hosts: Bastion
-  user: administrator
+- name: Copy SSH KEY Administrator and Ansible
+  hosts: Ubuntu,Rocky
   become: yes
-  vars: 
-   ansible_host_key_checking: false
+  vars:
    user_settings:
     Rocky:
       sudo_group: wheel
     Ubuntu:
       sudo_group: sudo
   tasks:
-    - name: Check if shh key exists
-      ansible.builtin.stat:
-        path: "/home/administrator/.ssh/id_ed25519"
-      register: ssh_key
-
-    - name: Copy SSH Administrator KEY
-      ansible.posix.authorized_key:
-       user: administrator
-       state: present
-       key: "{{ lookup('file', '/home/administrator/.ssh/id_ed25519.pub') }}"
-       create: no
-      when: ssh_key.stat.exists == false
-      become: true
-
-- name: Copy SSH KEY Administrator and Ansible
-  hosts: all
-  user: administrator
-  become: yes
-  vars:
-   ansible_host_key_checking: false
-   user_settings:
-    Rocky:
-      sudo_group: wheel
-    Ubuntu:
-      sudo_group: sudo
-  tasks:      
-   - name: Copy SSH Administrator KEY
-     ansible.posix.authorized_key:
-       user: administrator
-       state: present
-       key: "{{ lookup('file', '/home/administrator/.ssh/id_ed25519.pub') }}"
-
+   - name: Create Ansible user
+     ansible.builtin.user:
+       name: ansible
+      
    - name: Disable SSH root connection
      ansible.builtin.lineinfile:
              path: /etc/ssh/sshd_config
@@ -54,10 +24,6 @@
              path: /etc/ssh/sshd_config
              regexp: '^PasswordAuthentication'
              line: "PasswordAuthentication no"
-
-   - name: Create Ansible user
-     ansible.builtin.user:
-       name: ansible
 
    - name: Convert ansible user without sudo password
      ansible.builtin.lineinfile:
