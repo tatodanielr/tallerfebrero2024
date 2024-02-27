@@ -1,6 +1,6 @@
 ---
 - name: Copy SSH KEY Administrator and Ansible
-  hosts: Ubuntu,Rocky
+  hosts: all
   become: true
   vars:
    user_settings:
@@ -31,6 +31,24 @@
        state: present
        line: 'ansible ALL=(ALL) NOPASSWD: ALL'
        insertafter: EOF
+
+   - name: Ensure .ssh directory exists for ansible user
+     ansible.builtin.file:
+       path: "/home/ansible/.ssh"
+       state: directory
+       owner: ansible
+       group: ansible
+       mode: '0700'
+         
+   - name: Generar clave SSH Ed25519 para el usuario ansible
+     ansible.builtin.openssh_keypair:
+       path: "/home/ansible/.ssh/id_ed25519"  # Ruta donde se generará la clave SSH para el usuario ansible
+       state: present        
+       type: ed25519                          # Tipo de clave SSH
+       owner: ansible                         # Dueño del archivo de clave
+       group: ansible                         # Grupo del archivo de clave
+       mode: '0600'                           # Permisos del archivo de clave
+     become: yes
 
    - name: Copy Ansible user KEY
      ansible.builtin.authorized_key:
