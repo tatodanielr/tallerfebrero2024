@@ -1,6 +1,6 @@
 ---
 - name: Copy SSH KEY Administrator and Ansible
-  hosts: Ubuntu,Rocky
+  hosts: all
   become: true
   vars:
    user_settings:
@@ -32,8 +32,21 @@
        line: 'ansible ALL=(ALL) NOPASSWD: ALL'
        insertafter: EOF
 
-   - name: Copy Ansible user KEY
-     ansible.builtin.authorized_key:
-       user: ansible
-       state: present
-       key: "{{ lookup('file', '/home/administrator/.ssh/ansible.pub') }}"
+   - name: Ensure .ssh directory exists for ansible user
+     ansible.builtin.file:
+       path: "/home/ansible/.ssh"
+       state: directory
+       owner: ansible
+       group: ansible
+       mode: '0700'
+         
+   - name: Generate SSH KEY Ed25519 for ansible user
+     ansible.builtin.openssh_keypair:
+       path: "/home/ansible/.ssh/id_ed25519"
+       state: present        
+       type: ed25519                    
+       owner: ansible
+       group: ansible           
+       mode: '0600'           
+     become: yes
+
