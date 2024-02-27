@@ -194,6 +194,14 @@ El siguiente documento detalla paso por paso, la implementación y el despliegue
 
 https://github.com/tatodanielr/tallerfebrero2024/blob/main/Documentaci%C3%B3n_del_proyecto.docx
 
+El Rincón del Vago.
+========================================================
+
+Para automatizar la creación de los usuarios ansible, gestión de certificados y configuraciones de seguridad orientadas a los usuarios, te dejo este script.
+
+https://github.com/tatodanielr/tallerfebrero2024/blob/main/Inventories_Usuario_Administrator/setup_administrator_ssh_key.sh
+
+
 Autor
 -----
 
