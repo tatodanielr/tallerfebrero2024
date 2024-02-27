@@ -1,7 +1,7 @@
 ---
 - name: Copy SSH KEY Administrator and Ansible
   hosts: Ubuntu,Rocky
-  become: yes
+  become: true
   vars:
    user_settings:
     Rocky:
