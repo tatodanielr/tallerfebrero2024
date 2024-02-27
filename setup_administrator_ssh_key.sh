@@ -42,7 +42,9 @@ done
 password=$(openssl rand -base64 12)
 echo "The generated password is: $password"
 
-sudo useradd ansible -m -G sudo -s /bin/bash -p $password
+sudo useradd ansible -m -G sudo -s /bin/bash
+echo "ansible:$password" | sudo chpasswd
+
 
 cd /home/administrator/tallerfebrero2024/Inventories_Usuario_Administrator
 
