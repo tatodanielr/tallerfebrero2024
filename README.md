@@ -77,7 +77,8 @@ Descripción detallada de los Playbooks
 *   **Descripción detallada**:
     *   Utiliza el módulo `apt` para instalar los paquetes requeridos por Docker.
     *   Agrega la clave GPG de Docker y agrega el repositorio de Docker al sistema.
-    *   Utiliza el módulo `apt` nuevamente para instalar Docker CE.
+    *   Utiliza el módulo `apt` nuevamente para instalar Docker CE y Docker Compose.
+    *   Instala el módulo de Python para Docker.
     *   Las tareas están dirigidas solo a los hosts del grupo "Ubuntu".
 
 ### 3\_deploy\_dockers.yaml
