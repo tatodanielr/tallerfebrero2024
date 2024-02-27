@@ -1,5 +1,7 @@
 #!/bin/bash
-
+#############################################################################################################
+# This script sets up the SSH key for the Administrator user on all servers.
+#############################################################################################################
 # File containing the list of servers
 SERVERS_FILE="servers.txt"
 
@@ -10,10 +12,10 @@ if [ ! -f "$SERVERS_FILE" ]; then
 fi
 
 # SSH User
-USER="administrator"
+USER_Adm="administrator"
 
 # Prompt user for SSH password (it will be used for all SSH connections)
-read -s -p "Enter SSH password for $USER: " SSH_PASSWORD
+read -s -p "Enter SSH password for $USER_Adm: " SSH_PASSWORD
 echo
 
 # Path to the local SSH public key
@@ -31,13 +33,19 @@ fi
 # Read the list of servers from the file
 mapfile -t SERVERS < "$SERVERS_FILE"
 
-
-
 # Copy the public key to remote servers
 for HOST in "${SERVERS[@]}"; do
     echo "Copying public key to $HOST..."
-    ssh-copy-id -i ~/.ssh/id_ed25519.pub $USER@$HOST
+    ssh-copy-id -i ~/.ssh/id_ed25519.pub $USER_Adm@$HOST
 done
+
+#############################################################################################################
+# This script create and sets up the SSH key for the Ansible user on all servers.
+#############################################################################################################
+
+# Prompt user for SSH password (it will be used for all SSH connections)
+read -s -p "Enter SSH password for $USER_Ansible: " SSH_PASSWORD
+echo
 
 #Create local user Ansible
 if [ "$REMOTE_SERVER_DISTRIBUTION" = "Ubuntu" ]; then
@@ -48,12 +56,19 @@ else
 
 for HOST in "${SERVERS[@]}"; do
     echo "Creating user ansible on $HOST..."
-    ssh $HOST@administrator
+    ssh $HOST@$USER_Adm
     if [ "$REMOTE_SERVER_DISTRIBUTION" = "Ubuntu" ]; then
-    ssh $HOST@administrator "sudo useradd ansible -m -s /bin/bash -G sudo"
+    ssh $HOST@$USER_Adm "sudo useradd ansible -m -s /bin/bash -G sudo"
+    ssh $HOST@$USER_Adm "sudo mkdir /home/ansible/.ssh"
+    ssh $USER_Adm@$HOST "echo 'ansible:$USER_Ansible' | sudo chpasswd"
     elif [ "$REMOTE_SERVER_DISTRIBUTION" = "Rocky" ]; then
-    ssh $HOST@administrator "sudo useradd ansible -m -s /bin/bash -G wheel"
+    ssh $HOST@$USER_Adm "sudo useradd ansible -m -s /bin/bash -G wheel"
+    ssh $HOST@$USER_Adm "sudo mkdir /home/ansible/.ssh"
+    ssh $USER_Adm@$HOST "echo 'ansible:$USER_Ansible' | sudo chpasswd"
     else
-    ssh $HOST@administrator "sudo mkdir /home/ansible/.ssh"
-    fi
+done
+
+echo "$USER_Ansible" | su -c "ssh-keygen -t ed25519 -C "Administrator@bastion" ansible
+
+
 echo "Process completed."
