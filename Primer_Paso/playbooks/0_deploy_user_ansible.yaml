@@ -1,6 +1,6 @@
 ---
 - name: Copy SSH KEY Administrator
-  hosts: all
+  hosts: Bastion
   user: administrator
   become: yes
   vars: 
