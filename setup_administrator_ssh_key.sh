@@ -26,7 +26,7 @@ if [ ! -f "$SSH_PUBLIC_KEY" ]; then
     echo "Local SSH public key '$SSH_PUBLIC_KEY' does not exist."
     echo "Generate SSH key pair first using 'ssh-keygen -t ed25519' command."
     # Generate SSH Ed25519 key pair with a comment
-    ssh-keygen -t ed25519 -C "Administrator@bastion"
+    ssh-keygen -t ed25519 -C "Administrator@bastion" -q -N ""
     exit 1
 fi
 
@@ -45,41 +45,41 @@ done
 
 # SSH User
 USER_Ansible="ansible"
-
+PASSWORD_Ansible=$(openssl rand -base64 12)
+REMOTE_SERVER_DISTRIBUTION="$(cat /etc/os-release | grep "^NAME" | cut -d "=" -f 2 | sed 's/"//g')"
 #Create local user Ansible
 if [ "$REMOTE_SERVER_DISTRIBUTION" = "Ubuntu" ]; then
-sudo useradd ansible -m -s /bin/bash -G sudo
-elif [ "$REMOTE_SERVER_DISTRIBUTION" = "Rocky" ]; then
-sudo useradd ansible -m -s /bin/bash -G wheel
+sudo useradd ansible -m -s /bin/bash -G sudo -p "$USERNAME"
+elif [ "$REMOTE_SERVER_DISTRIBUTION" = "Rocky Linux" ]; then
+sudo useradd ansible -m -s /bin/bash -G wheel -p "$USERNAME"
 else
 echo "Unknown distribution. User not added to any group."
 fi
 
 for HOST in "${SERVERS[@]}"; do
-    echo "Creating user ansible on $HOST..."
-    ssh $USER_Adm@$HOST "sudo useradd ansible -m -s /bin/bash"
-    REMOTE_SERVER_DISTRIBUTION="$(ssh $USER_Adm@$HOST 'cat /etc/os-release' | grep "^NAME" | cut -d "=" -f 2 | sed 's/"//g')"
+    echo ssh $USER_Adm@$HOST "sudo useradd ansible -m -s /bin/bash"
+    REMOTE_SERVER_DISTRIBUTION="$(cat /etc/os-release | grep "^NAME" | cut -d "=" -f 2 | sed 's/"//g')"
     if [ "$REMOTE_SERVER_DISTRIBUTION" = "Ubuntu" ]; then
-        ssh $USER_Adm@$HOST "sudo usermod -aG sudo"
+        echo ssh $USER_Adm@$HOST "sudo usermod -aG sudo -p "$USERNAME""
     elif [ "$REMOTE_SERVER_DISTRIBUTION" = "Rocky" ]; then
-        ssh $USER_Adm@$HOST "sudo usermod -aG wheel"
+        echo ssh $USER_Adm@$HOST "sudo usermod -aG wheel -p "$USERNAME""
     else
         echo "Unknown distribution. User not added to any group."
     fi
-    ssh $USER_Ansible@$HOST "sudo mkdir /home/ansible/.ssh"
+    ssh $USER_Adm@$HOST "sudo mkdir /home/ansible/.ssh"
 done
 
 # Generate SSH keys for the Ansible user
-sudo -u $USER_Ansible ssh-keygen -t ed25519 -C "$USER_Ansible@bastion"
+sudo -u $USER_Ansible ssh-keygen -t ed25519 -C "$USER_Ansible@bastion" -q -N ""
 
 # Copy the public key to the bastion host for the Ansible user
 echo "Copying public key to bastion host..."
-sudo -u $USER_Ansible ssh-copy-id -i /home/$USER_Ansible/.ssh/id_ed25519.pub $USER_Ansible@$HOST
+echo sudo -u $USER_Adm ssh-copy-id -i /home/$USER_Ansible/.ssh/id_ed25519.pub $USER_Ansible@$HOST
 
 # Copy the public key to remote servers for the Admin user
 for HOST in "${SERVERS[@]}"; do
     echo "Copying public key to $HOST..."
-    sudo -u $USER_Ansible ssh-copy-id -i /home/$USER_Ansible/.ssh/id_ed25519.pub $USER_Ansible@$HOST
+    echo sudo -u $USER_Adm ssh-copy-id -i /home/$USER_Ansible/.ssh/id_ed25519.pub $USER_Ansible@$HOST
 done
 
 echo "Process completed."
