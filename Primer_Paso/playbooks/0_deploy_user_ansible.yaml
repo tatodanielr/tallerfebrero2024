@@ -11,7 +11,7 @@
     Ubuntu:
       sudo_group: sudo
   tasks:
-    - name: Verificar si la clave SSH ya existe
+    - name: Check if shh key exists
       ansible.builtin.stat:
         path: "/home/administrator/.ssh/id_ed25519.pub"
       register: ssh_key
@@ -70,4 +70,4 @@
      ansible.builtin.authorized_key:
        user: ansible
        state: present
-       key: "{{ lookup('file', '/home/certificates/id_ed25519.pub') }}"
+       key: "{{ lookup('file', '/home/ansible/.ssh/id_ed25519.pub') }}"
