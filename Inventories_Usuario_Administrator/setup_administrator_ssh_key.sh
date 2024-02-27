@@ -48,4 +48,4 @@ echo "ansible:$password" | sudo chpasswd
 
 cd /home/administrator/tallerfebrero2024/Inventories_Usuario_Administrator
 
-ansible-playbook -i inventory.ini playbooks/0_deploy_user_ansible.yaml -K -vvvvv
+ansible-playbook -i inventory.ini playbooks/0_deploy_user_ansible.yaml -K
