@@ -91,7 +91,7 @@ Descripción detallada de los Playbooks
     *   El contenedor se configura para que sirva la aplicación web desde el archivo `.war`.
     *   Estas tareas están dirigidas solo a los hosts del grupo "Ubuntu".
 
-### 4\_install\_ngix.yaml
+### 4\_install\_nginx.yaml
 
 *   **Objetivo**: Instalar y configurar Nginx en sistemas Rocky Linux.
 *   **Descripción detallada**:
