@@ -1,13 +1,7 @@
 ---
 - name: Copy SSH KEY Administrator and Ansible
   hosts: Ubuntu,Rocky
-  become: true
-  vars:
-   user_settings:
-    Rocky:
-      sudo_group: wheel
-    Ubuntu:
-      sudo_group: sudo
+  become: yes
   tasks:
    - name: Create Ansible user
      ansible.builtin.user:
@@ -41,5 +35,12 @@
 
    - name: Restart SSH service
      service:
+       name: sshd
+       state: restarted
+     when: ansible_distribution == 'Rocky'
+
+   - name: Restart SSH service
+     service:
        name: ssh
        state: restarted
+     when: ansible_distribution == 'Ubuntu'
