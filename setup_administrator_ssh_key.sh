@@ -61,15 +61,15 @@ fi
 
 for HOST in "${SERVERS[@]}"; do
     echo "Creating user ansible on $HOST..."
-    ssh $HOST@$USER_Adm
+    ssh $USER_Adm@$HOST
     REMOTE_SERVER_DISTRIBUTION="$(cat /etc/os-release | grep "^NAME" | cut -d "=" -f 2 | sed 's/"//g')"
     if [ "$REMOTE_SERVER_DISTRIBUTION" = "Ubuntu" ]; then
-    ssh $HOST@$USER_Adm "sudo useradd ansible -m -s /bin/bash -G sudo"
-    ssh $HOST@$USER_Adm "sudo mkdir /home/ansible/.ssh"
+    ssh $USER_Adm@$HOST "sudo useradd ansible -m -s /bin/bash -G sudo"
+    ssh $USER_Adm@$HOST "sudo mkdir /home/ansible/.ssh"
     ssh $USER_Adm@$HOST "echo 'ansible:$USER_Ansible' | sudo chpasswd"
     elif [ "$REMOTE_SERVER_DISTRIBUTION" = "Rocky" ]; then
-    ssh $HOST@$USER_Adm "sudo useradd ansible -m -s /bin/bash -G wheel"
-    ssh $HOST@$USER_Adm "sudo mkdir /home/ansible/.ssh"
+    ssh $USER_Adm@$HOST "sudo useradd ansible -m -s /bin/bash -G wheel"
+    ssh $USER_Adm@$HOST "sudo mkdir /home/ansible/.ssh"
     ssh $USER_Adm@$HOST "echo 'ansible:$USER_Ansible' | sudo chpasswd"
     else
     echo "Unknown distribution. User not added to any group."
