@@ -12,6 +12,10 @@ fi
 # SSH User
 USER="administrator"
 
+# Prompt user for SSH password (it will be used for all SSH connections)
+read -s -p "Enter SSH password for $USER: " SSH_PASSWORD
+echo
+
 # Path to the local SSH public key
 SSH_PUBLIC_KEY="$HOME/.ssh/id_ed25519.pub"
 
