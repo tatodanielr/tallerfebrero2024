@@ -75,7 +75,17 @@ for HOST in "${SERVERS[@]}"; do
     fi
 done
 
-echo "$USER_Ansible" | su -c "ssh-keygen -t ed25519 -C "Administrator@bastion" ansible
+# Generate SSH keys for the Ansible user
+sudo -u $USER_Ansible ssh-keygen -t ed25519 -C "$USER_Ansible@bastion"
 
+# Copy the public key to the bastion host for the Ansible user
+echo "Copying public key to bastion host..."
+sudo -u $USER_Ansible ssh-copy-id -i /home/$USER_Ansible/.ssh/id_ed25519.pub $USER_Ansible@$HOST
+
+# Copy the public key to remote servers for the Admin user
+for HOST in "${SERVERS[@]}"; do
+    echo "Copying public key to $HOST..."
+    sudo -u $USER_Ansible ssh-copy-id -i /home/$USER_Ansible/.ssh/id_ed25519.pub $USER_Ansible@$HOST
+done
 
 echo "Process completed."
