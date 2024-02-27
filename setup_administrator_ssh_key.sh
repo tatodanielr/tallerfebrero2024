@@ -58,7 +58,7 @@ sudo useradd ansible -m -s /bin/bash -G wheel
 else
 echo "Unknown distribution. User not added to any group."
 fi
-exit 1
+exit
 
 for HOST in "${SERVERS[@]}"; do
     echo "Creating user ansible on $HOST..."
