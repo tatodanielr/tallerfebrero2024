@@ -43,6 +43,9 @@ done
 # This script create and sets up the SSH key for the Ansible user on all servers.
 #############################################################################################################
 
+# SSH User
+USER_Ansible="ansible"
+
 # Prompt user for SSH password (it will be used for all SSH connections)
 read -s -p "Enter SSH password for $USER_Ansible: " SSH_PASSWORD
 echo
@@ -53,6 +56,8 @@ sudo useradd ansible -m -s /bin/bash -G sudo
 elif [ "$REMOTE_SERVER_DISTRIBUTION" = "Rocky" ]; then
 sudo useradd ansible -m -s /bin/bash -G wheel
 else
+echo "Unknown distribution. User not added to any group."
+fi
 
 for HOST in "${SERVERS[@]}"; do
     echo "Creating user ansible on $HOST..."
@@ -66,6 +71,8 @@ for HOST in "${SERVERS[@]}"; do
     ssh $HOST@$USER_Adm "sudo mkdir /home/ansible/.ssh"
     ssh $USER_Adm@$HOST "echo 'ansible:$USER_Ansible' | sudo chpasswd"
     else
+    echo "Unknown distribution. User not added to any group."
+    fi
 done
 
 echo "$USER_Ansible" | su -c "ssh-keygen -t ed25519 -C "Administrator@bastion" ansible
