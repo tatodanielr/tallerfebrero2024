@@ -58,15 +58,19 @@ sudo useradd ansible -m -s /bin/bash -G wheel
 else
 echo "Unknown distribution. User not added to any group."
 fi
-REMOTE_SERVER_DISTRIBUTION="$(cat /etc/os-release | grep "^NAME" | cut -d "=" -f 2 | sed 's/"//g')"
+
 for HOST in "${SERVERS[@]}"; do
     echo "Creating user ansible on $HOST..."
     if [ "$REMOTE_SERVER_DISTRIBUTION" = "Ubuntu" ]; then
-    ssh $USER_Adm@$HOST "sudo useradd ansible -m -s /bin/bash -G sudo"
+    ssh $USER_Adm@$HOST "sudo useradd ansible -m -s /bin/bash"
+    REMOTE_SERVER_DISTRIBUTION="$(cat /etc/os-release | grep "^NAME" | cut -d "=" -f 2 | sed 's/"//g')"
+    ssh $USER_Adm@$HOST "sudo usermod -aG sudo $USER_Ansible"
     ssh $USER_Adm@$HOST "sudo mkdir /home/ansible/.ssh"
     ssh $USER_Adm@$HOST "echo 'ansible:$USER_Ansible' | sudo chpasswd"
     elif [ "$REMOTE_SERVER_DISTRIBUTION" = "Rocky" ]; then
-    ssh $USER_Adm@$HOST "sudo useradd ansible -m -s /bin/bash -G wheel"
+    ssh $USER_Adm@$HOST "sudo useradd ansible -m -s /bin/bash"
+    REMOTE_SERVER_DISTRIBUTION="$(cat /etc/os-release | grep "^NAME" | cut -d "=" -f 2 | sed 's/"//g')"
+    ssh $USER_Adm@$HOST "sudo usermod -aG wheel $USER_Ansible"
     ssh $USER_Adm@$HOST "sudo mkdir /home/ansible/.ssh"
     ssh $USER_Adm@$HOST "echo 'ansible:$USER_Ansible' | sudo chpasswd"
     else
