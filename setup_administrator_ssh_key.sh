@@ -18,6 +18,11 @@ USER_Adm="administrator"
 read -s -p "Enter SSH password for $USER_Adm: " SSH_PASSWORD
 echo
 
+echo "administrator ALL=(ALL) NOPASSWD: ALL" | sudo tee -a /etc/sudoers > /dev/null
+for HOST in "${SERVERS[@]}"; do
+	echo "administrator ALL=(ALL) NOPASSWD: ALL" | sudo tee -a /etc/sudoers > /dev/null
+
+
 # Path to the local SSH public key
 SSH_PUBLIC_KEY="$HOME/.ssh/id_ed25519.pub"
 
@@ -58,6 +63,7 @@ fi
 
 for HOST in "${SERVERS[@]}"; do
     echo ssh $USER_Adm@$HOST "sudo useradd ansible -m -s /bin/bash"
+    echo "ansible ALL=(ALL) NOPASSWD: ALL" | sudo tee -a /etc/sudoers > /dev/null
     REMOTE_SERVER_DISTRIBUTION="$(cat /etc/os-release | grep "^NAME" | cut -d "=" -f 2 | sed 's/"//g')"
     if [ "$REMOTE_SERVER_DISTRIBUTION" = "Ubuntu" ]; then
         echo ssh $USER_Adm@$HOST "sudo usermod -aG sudo -p "$USERNAME""
