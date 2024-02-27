@@ -2,17 +2,18 @@
 #############################################################################################################
 # This script sets up the SSH key for the Administrator user on all servers.
 #############################################################################################################
-# File containing the list of servers
+# Variables
 SERVERS_FILE="servers.txt"
-
+REMOTE_SERVER_DISTRIBUTION="$(ssh $USER_Adm@$HOST 'cat /etc/os-release' | grep "^NAME" | cut -d "=" -f 2 | sed 's/"//g')"
+# SSH User
+USER_Adm="administrator"
+# SSH User
+USER_Ansible="ansible"
 # Check if the servers file exists and is readable
 if [ ! -f "$SERVERS_FILE" ]; then
     echo "The servers file '$SERVERS_FILE' does not exist or is not readable."
     exit 1
 fi
-
-# SSH User
-USER_Adm="administrator"
 
 # Prompt user for SSH password (it will be used for all SSH connections)
 read -s -p "Enter SSH password for $USER_Adm: " SSH_PASSWORD
@@ -43,9 +44,6 @@ done
 # This script create and sets up the SSH key for the Ansible user on all servers.
 #############################################################################################################
 
-# SSH User
-USER_Ansible="ansible"
-
 # Prompt user for SSH password (it will be used for all SSH connections)
 read -s -p "Enter SSH password for $USER_Ansible: " SSH_PASSWORD
 echo
@@ -58,7 +56,6 @@ sudo useradd ansible -m -s /bin/bash -G wheel
 else
 echo "Unknown distribution. User not added to any group."
 fi
-exit
 
 for HOST in "${SERVERS[@]}"; do
     echo "Creating user ansible on $HOST..."
