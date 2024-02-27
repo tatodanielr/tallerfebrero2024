@@ -39,4 +39,21 @@ for HOST in "${SERVERS[@]}"; do
     ssh-copy-id -i ~/.ssh/id_ed25519.pub $USER@$HOST
 done
 
+#Create local user Ansible
+if [ "$REMOTE_SERVER_DISTRIBUTION" = "Ubuntu" ]; then
+sudo useradd ansible -m -s /bin/bash -G sudo
+elif [ "$REMOTE_SERVER_DISTRIBUTION" = "Rocky" ]; then
+sudo useradd ansible -m -s /bin/bash -G wheel
+else
+
+for HOST in "${SERVERS[@]}"; do
+    echo "Creating user ansible on $HOST..."
+    ssh $HOST@administrator
+    if [ "$REMOTE_SERVER_DISTRIBUTION" = "Ubuntu" ]; then
+    ssh $HOST@administrator "sudo useradd ansible -m -s /bin/bash -G sudo"
+    elif [ "$REMOTE_SERVER_DISTRIBUTION" = "Rocky" ]; then
+    ssh $HOST@administrator "sudo useradd ansible -m -s /bin/bash -G wheel"
+    else
+    ssh $HOST@administrator "sudo mkdir /home/ansible/.ssh"
+    fi
 echo "Process completed."
