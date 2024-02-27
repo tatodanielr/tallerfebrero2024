@@ -4,7 +4,7 @@
 #############################################################################################################
 # File containing the list of servers
 SERVERS_FILE="servers.txt"
-REMOTE_SERVER_DISTRIBUTION="$(ssh $USER_Adm@$HOST 'cat /etc/os-release' | grep "^NAME" | cut -d "=" -f 2 | sed 's/"//g')"
+
 # Check if the servers file exists and is readable
 if [ ! -f "$SERVERS_FILE" ]; then
     echo "The servers file '$SERVERS_FILE' does not exist or is not readable."
@@ -46,10 +46,6 @@ done
 # SSH User
 USER_Ansible="ansible"
 
-# Prompt user for SSH password (it will be used for all SSH connections)
-read -s -p "Enter SSH password for $USER_Ansible: " SSH_PASSWORD
-echo
-
 #Create local user Ansible
 if [ "$REMOTE_SERVER_DISTRIBUTION" = "Ubuntu" ]; then
 sudo useradd ansible -m -s /bin/bash -G sudo
@@ -64,9 +60,9 @@ for HOST in "${SERVERS[@]}"; do
     ssh $USER_Adm@$HOST "sudo useradd ansible -m -s /bin/bash"
     REMOTE_SERVER_DISTRIBUTION="$(ssh $USER_Adm@$HOST 'cat /etc/os-release' | grep "^NAME" | cut -d "=" -f 2 | sed 's/"//g')"
     if [ "$REMOTE_SERVER_DISTRIBUTION" = "Ubuntu" ]; then
-        ssh $USER_Adm@$HOST "sudo usermod -aG sudo $USER_Ansible"
+        ssh $USER_Adm@$HOST "sudo usermod -aG sudo"
     elif [ "$REMOTE_SERVER_DISTRIBUTION" = "Rocky" ]; then
-        ssh $USER_Adm@$HOST "sudo usermod -aG wheel $USER_Ansible"
+        ssh $USER_Adm@$HOST "sudo usermod -aG wheel"
     else
         echo "Unknown distribution. User not added to any group."
     fi
