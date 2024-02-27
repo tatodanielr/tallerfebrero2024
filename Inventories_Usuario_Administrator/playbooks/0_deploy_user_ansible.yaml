@@ -1,0 +1,33 @@
+---
+- name: Copy SSH KEY Administrator and Ansible
+  hosts: Ubuntu,Rocky
+  become: true
+  vars:
+   user_settings:
+    Rocky:
+      sudo_group: wheel
+    Ubuntu:
+      sudo_group: sudo
+  tasks:
+   - name: Create Ansible user
+     ansible.builtin.user:
+       name: ansible
+      
+   - name: Disable SSH root connection
+     ansible.builtin.lineinfile:
+             path: /etc/ssh/sshd_config
+             regexp: '^PermitRootLogin'
+             line: "PermitRootLogin no"
+
+   - name: Disable autentication without password
+     ansible.builtin.lineinfile:
+             path: /etc/ssh/sshd_config
+             regexp: '^PasswordAuthentication'
+             line: "PasswordAuthentication no"
+
+   - name: Convert ansible user without sudo password
+     ansible.builtin.lineinfile:
+       path: /etc/sudoers
+       state: present
+       line: 'ansible ALL=(ALL) NOPASSWD: ALL'
+       insertafter: EOF
