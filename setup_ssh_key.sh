@@ -12,6 +12,16 @@ fi
 # SSH User
 USER="administrator"
 
+# Path to the local SSH public key
+SSH_PUBLIC_KEY="$HOME/.ssh/id_ed25519.pub"
+
+# Check if the local SSH public key exists
+if [ ! -f "$SSH_PUBLIC_KEY" ]; then
+    echo "Local SSH public key '$SSH_PUBLIC_KEY' does not exist."
+    echo "Generate SSH key pair first using 'ssh-keygen -t ed25519' command."
+    exit 1
+fi
+
 # Read the list of servers from the file
 mapfile -t SERVERS < "$SERVERS_FILE"
 
