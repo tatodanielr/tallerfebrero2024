@@ -1,0 +1,10 @@
+- name: Play all 
+  hosts: all
+  become: yes
+  tasks:
+
+- name: Include a play after another play
+  import_playbook: 1_update_servers.yaml
+  import_playbook: 2_install_docker.yaml 
+  import_playbook: 3_deploy_dockers.yaml
+  import_playbook: 4_install_nginx.yaml
